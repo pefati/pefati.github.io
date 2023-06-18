@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Propuesta de Noviazgo</title>
+    <style>
+        body {
+            background-color: #ffe6f2;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        h1 {
+            color: #ff005e;
+        }
+
+        p {
+            color: #333333;
+        }
+
+        .container {
+            margin-top: 100px;
+        }
+
+        .heart {
+            color: #ff005e;
+            font-size: 80px;
+        }
+
+        .message {
+            margin-top: 50px;
+            font-size: 24px;
+        }
+
+        .button {
+            background-color: #ff005e;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #cc004c;
+        }
+
+        .response {
+            margin-top: 50px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .corner-image.left {
+            position: absolute;
+            width: 200px;
+            transform: rotate(-20deg);
+        }
+
+        .corner-image.right {
+            position: absolute;
+            width: 200px;
+            transform: rotate(20deg);
+        }
+
+        .corner-image.left {
+            left: 50px;
+            top: 50px;
+        }
+
+        .corner-image.right {
+            right: 50px;
+            top: 50px;
+        }
+    </style>
+    <script>
+        function showResponse(response) {
+            document.getElementById("response").innerHTML = response;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Propuesta de Noviazgo</h1>
+        <img class="corner-image left" src="https://rare-gallery.com/uploads/posts/1204595-anime-anime-girls-digital-art-artwork-portrait-display.jpg" alt="Imagen Izquierda">
+        <img class="corner-image right" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH-xwhhBTayPGb5UNkTpd_f0l5OIyKdBJaC_kKE-acbzs9RQJvJEwdGf9Bnvczytm5lxc&usqp=CAU" alt="Imagen Derecha">
+        <i class="heart">❤️</i>
+        <p class="message">Eres la persona especial que quiero tener a mi lado. ¿Quieres ser mi novia?</p>
+        <a href="#" class="button" onclick="showResponse('Muchas gracias, mi amor! Espero tengamos una linda relación con el paso de los años <3')">¡Sí, quiero ser tu novia!</a>
+        <a href="#" class="button" onclick="showResponse('Oh... Okey... Entiendo... Al menos espero que podamos seguir hablando y... Ser amigos?... Te quiero mucho... Y siempre estaré ahí para cuando tengas problemas!')">No quiero ser nada contigo</a>
+        <p class="response" id="response"></p>
+    </div>
+</body>
+</html>

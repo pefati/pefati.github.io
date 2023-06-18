@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Juego y Propuesta de Noviazgo</title>
+    <style>
+        body {
+            background-color: #ffe6f2;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        h1 {
+            color: #ff005e;
+        }
+
+        p {
+            color: #333333;
+        }
+
+        .container {
+            margin-top: 100px;
+        }
+
+        .heart {
+            color: #ff005e;
+            font-size: 80px;
+        }
+
+        .message {
+            margin-top: 50px;
+            font-size: 24px;
+        }
+
+        .button {
+            background-color: #ff005e;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #cc004c;
+        }
+
+        .response {
+            margin-top: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .corner-image {
+            position: absolute;
+            width: 150px;
+            transform: rotate(-20deg);
+        }
+
+        .corner-image.left {
+            left: -50px;
+            top: -50px;
+        }
+
+        .corner-image.right {
+            right: -50px;
+            top: -50px;
+        }
+
+        .game-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+    </style>
+    <script>
+        function showConfirmation() {
+            var confirmation = confirm("¿Segura que me quieres?");
+
+            if (confirmation) {
+                window.location.href = "ruta_a_tu_pagina_original.html";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="game-container" class="container">
+        <h1>Mini Juego</h1>
+        <p>¿Segura que me quieres?</p>
+        <button class="button" onclick="showConfirmation()">Sí</button>
+        <button class="button" onclick="alert('Oh... Okey, entiendo...')">No</button>
+    </div>
+
+    <div id="main-container" class="container" style="display: none;">
+        <h1>Propuesta de Noviazgo</h1>
+        <img class="corner-image left" src="ruta_a_tu_imagen_izquierda.png" alt="Imagen Izquierda">
+        <img class="corner-image right" src="ruta_a_tu_imagen_derecha.png" alt="Imagen Derecha">
+        <i class="heart">❤️</i>
+        <p class="message">Eres la persona especial que quiero tener a mi lado. ¿Quieres ser mi novia?</p>
+        <a href="#" class="button" onclick="showConfirmation()">¡Sí, quiero ser tu novia!</a>
+        <a href="#" class="button" onclick="alert('Oh... Okey... Entiendo... Al menos espero que podamos seguir hablando y... Ser amigos?... Te quiero mucho... Y siempre estaré ahí para cuando tengas problemas!')">No quiero ser nada contigo</a>
+        <p class="response" id="response"></p>
+    </div>
+</body>
+</html>
