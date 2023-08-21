@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Pagina de Presentacion de Franco Rodriguez">
+  <meta name="author" content="Franco Rodriguez">
+  <link href="pefati.png" rel="icon">
+  <title>Abrazo virtual pa nao</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Neue', cursive;
+    }
+    :root {
+      --loading-width: 160px;
+      --loading-heigth: 23px;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #13142b;
+      overflow: hidden;
+    }
+    canvas {
+      opacity: 0.1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    main {
+      text-align: center;
+      width: 90vw;
+    }
+    .box {
+      display: inline-block;
+      border: solid rgb(0, 0, 0) 4px;
+      width: var(--loading-width);
+      background-color: white;
+    }
+    .loading-box {
+      height: var(--loading-heigth);
+      width: var(--loading-width);
+      background-color: blueviolet;
+      animation: loading 6.5s;
+    }
+    #state-message {
+      font-size: larger;
+      font-weight: bold;
+      color: rgb(109, 109, 109);
+    }
+    @keyframes loading {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: var(--loading-width);
+      }
+    }
+    #title,
+    #result {
+      margin-top: 8px;
+      margin-bottom: 10px;
+    }
+    #me {
+      margin-top: 8px;
+      margin-bottom: 14px;
+    }
+    .box {
+      margin-top: 3px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="rainbow"></canvas>
+  <main>
+    <h1 id="title">Abrazito virtual ❤️ </h1>
+    <div>
+      <img id="me" src="penguin.svg" alt="">
+    </div>
+    <div class="box">
+      <div class="loading-box"></div>
+    </div>
+    <h3 id="state-message">cargando abrazito :D</h3>
+    <h2 id="result">&nbsp;</h2>
+    <script>
+    
+            setTimeout(function() {
+                const message = document.getElementById('result');
+                message.innerHTML = "Abrazo enviado! te quiero musho nao, espero que te guste aunq sea un poquito <3"
+            }, 6200);
+            setTimeout(function() {
+                const message = document.getElementById('state-message');
+                message.innerHTML = "&nbsp;"
+            }, 6000);
+        
+    </script>
+  </main>
+  <script>
+    // VARS
+const DPR = window.devicePixelRatio
+const colors = [
+  ['#EC008C', '#f957b6'],
+  ['#EF4136', '#ff7972'],
+  ['yellow', '#fff'],
+  ['lime', '#7aff7a'],
+  ['#27AAE1', '#5ec8f2'],
+  ["#662D91", '#a158d8']
+]
+const tau = Math.PI * 2
+const start = Math.PI // Start position
+const finish = .5 // Finish (in % of circle "tau" basically ending at Math.PI * 2)
+const inc = .007
+const rainbowHeight = .5 // of view height
+const arcStagger = .05 // in %
+const sparklesInPerStripe = 3
+
+let sparkles = []
+let radius
+
+// UTILS
+const clamp = (min, max, val) => {
+  return Math.min(Math.max(min, val), max)
+}
+const boolRandom = () => {
+  return Math.round(Math.random()) ? false : true
+}
+
+// CANVAS
+const sizeCanvas = () => {
+  radius = clamp(15, 50, window.innerWidth / 60 / DPR)
+  const canvas = document.getElementById('rainbow')
+  canvas.width = window.innerWidth * DPR
+  canvas.height = window.innerHeight * DPR
+}
+
+// SPARKLE PROPS
+const addRandom = function (lineWidth) {
+  return (boolRandom() ? -1 : 1) * Math.random() * lineWidth
+}
+const makeSparkle = ({cx, cy, radiusX, radiusY, endAngle, lineWidth, color}) => {
+  return {
+    x: cx + radiusX * Math.cos(endAngle) + addRandom(lineWidth), // stay out in front
+    y: cy + radiusY * Math.sin(endAngle) + addRandom(lineWidth), 
+    opacity: 1, 
+    color, 
+    rad: Math.max(radius * Math.random() * DPR, 15)
+  }
+}
+
+// ANIMATE
+function animate(percent = 0) {
+  const doneAnimatingIn = percent >= finish + arcStagger * colors.length // animating in rainbow arcs
+  
+  let width = window.innerWidth * DPR
+  let height = window.innerHeight * DPR
+  
+  const lineWidth = height * .5 / colors.length
+  
+  const cx = width / 2
+  const startCy = height + lineWidth * rainbowHeight + (height - colors.length * lineWidth) / 3 // Possibly simplify this... but the math is good :) 
+  
+  const startRadiusX = width / 2 + colors.length * lineWidth * 2
+  const startRadiusY = height
+
+  let ctx = document.getElementById('rainbow').getContext('2d')
+  ctx.clearRect(0, 0, width, height);  
+  ctx.globalAlpha = 1;
+  ctx.lineWidth = lineWidth
+  
+  for (let i = colors.length - 1; i > -1; i--) {
+    const [colorLine, colorSparkle] = colors[i]
+    
+    const cy = startCy + i * (lineWidth / 2 - 1) // - 1 for overlap
+    
+    // Making these "concentric" ellipses
+    const radiusX = startRadiusX - i * lineWidth / 2
+    const radiusY = startRadiusY - i * lineWidth / 2
+    
+    const endAngle = tau * (percent - i * arcStagger) + start
+    
+    const angle = clamp(start, tau * finish + start, endAngle)
+    
+    // DRAW ONE OF OUR ELLIPSE LINES
+    // - One color of our rainbow
+    ctx.beginPath()
+    ctx.strokeStyle = colorLine
+    ctx.ellipse(
+      cx,
+      cy,
+      radiusX,
+      radiusY,
+      0,
+      start,
+      angle,
+      false
+    )
+    ctx.lineCap = "round"
+    ctx.stroke()
+    ctx.closePath()    
+    
+    
+    if (!doneAnimatingIn) { 
+      // ADD: Animating in sparkles, follow the start of each color
+      for (let j = 0; j < sparklesInPerStripe; j++) {
+        sparkles.push(
+          makeSparkle({cx, cy, radiusX, radiusY, endAngle: angle, lineWidth, color: colorLine})
+        )
+      }
+    } else {
+      // ADD: Normal sparkles after animating in
+      sparkles.push(makeSparkle({cx, cy, radiusX, radiusY, endAngle: Math.random() * Math.PI + Math.PI, lineWidth, color: boolRandom() ? '#fff' : colorSparkle}))
+    }
+  }
+  
+  // PAINT THE SPARKLES
+  // and get next sparkles ready too
+  const nextSparkles = []
+  for (let i = 0, len = sparkles.length; i < len; i++) {
+    const {x, y, opacity, color, rad} = sparkles[i]
+    ctx.beginPath()
+    ctx.globalAlpha = opacity;
+    ctx.fillStyle = color
+    ctx.arc(x - rad, y - rad, rad, 0, Math.PI / 2);
+    ctx.arc(x - rad, y + rad, rad, 3 * Math.PI / 2, 2 * Math.PI);
+    ctx.arc(x + rad, y + rad, rad, Math.PI, 3 * Math.PI / 2);
+    ctx.arc(x + rad, y - rad, rad, Math.PI / 2, Math.PI);
+    ctx.fill()
+    
+    // Sparkles we are keeping
+    if (opacity > .2 && rad > .2) {
+      nextSparkles.push({
+        x,
+        y,
+        opacity: opacity - .03,
+        rad: rad - .2,
+        color
+      })
+    }
+  }
+  sparkles = nextSparkles
+  
+  if (!doneAnimatingIn) {
+    // Animating in our rainbow
+    requestAnimationFrame(function () {
+      animate(percent + inc)
+    })
+  } else {
+    // Resume sparkles on static rainbow
+    requestAnimationFrame(function () {
+      animate(finish + colors.length * arcStagger)
+    })
+  }
+}
+
+sizeCanvas()
+requestAnimationFrame(function () {animate()})
+window.addEventListener('resize', sizeCanvas)
+  </script>
+</body>
+</html>
